@@ -21,9 +21,9 @@ class ManagersController extends Controller
         $data = Validator::make($request->all(), [
             "first_name" => "required|string",
             "last_name" => "required|string",
-            "email" => "email|string",
+            "email" => "email|string|unique:users",
             "role" => "string",
-            "password" => "string",
+            "password" => "string|confirmed",
         ]);
         
         if($data->fails()){
@@ -31,8 +31,9 @@ class ManagersController extends Controller
         }
         
         if(auth()->user()->role == "superadmin") {
-            $userData = $request->except('_token');
+            $userData = $request->except('_token', 'password_confirmation');
             $userData["secret_code"] = "MS".rand(1000, 500000);
+            $userData['password'] = Hash::make($request->password);
             
             try {
                 User::create($userData);
@@ -63,12 +64,19 @@ class ManagersController extends Controller
 
 
         if($request->password && auth()->user()->role == "superadmin") {
-            $request['password'] = Hash::make($request->password);
-            $userData = $request->except('_token');
+            $data = Validator::make($request->all(), [
+                "password" => "required|string|confirmed",
+            ]);
+            
+            if($data->fails()){
+                return response()->json(['message' => $data->errors()->first(), "status" => false], 403);
+            }
+            
+            $userData['password'] = Hash::make($request->password);
+            $userData = $request->except('_token', 'confirmation_password');
         }else{
             $userData = $request->except('_token', 'password');
         }
-
         try {
             User::where("secret_code", $request->secret_code)->update($userData);
             return response()->json(['message' => "Admin Profile updated Successfully", "success" => true], 200);

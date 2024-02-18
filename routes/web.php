@@ -62,7 +62,7 @@ Route::middleware(["auth"])->name("admin.")->group(function () {
     Route::name("members.")->middleware("superadmin")->prefix("/members")->group(function () {
         Route::get('/', [MemberController::class, 'index'])->name('index');
         Route::post('/create', [MemberController::class, 'create'])->name('create');
-        Route::post('/update', [MemberController::class, 'update'])->name('update');
+        Route::post('/update/{id}', [MemberController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [MemberController::class, 'delete'])->name('delete');
     });
     

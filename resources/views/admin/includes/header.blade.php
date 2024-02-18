@@ -622,18 +622,10 @@
 												<li>
 													<hr class="dropdown-divider my-0">
 												</li>
-												<li><a class="dropdown-item" href="login.html"><i
+												<li><a class="dropdown-item" href="{{ route('logout') }}"><i
 															class="ti ti-power fs-18 me-2 op-7"></i>Sign Out</a></li>
 												<li>
 													<hr class="dropdown-divider my-0">
-												</li>
-												<li class="d-flex justify-content-center p-2">
-													<span><a class="fs-12 px-2 border-end"
-															href="javascript:void(0);">Privacy Policy</a></span>
-													<span><a class="fs-12 px-2 border-end"
-															href="javascript:void(0);">Terms</a></span>
-													<span><a class="fs-12 px-2"
-															href="javascript:void(0);">Cookies</a></span>
 												</li>
 											</ul>
 										</div>

@@ -70,8 +70,26 @@
 																							<div class="col-sm-12 mb-3">
 																								<div class="form-group mb-4">
 																									<label class="mb-2 fw-500">Password<span class="text-danger ms-1">*</span></label>
-																									<div >
-																										<input type="password" class="form-control" name="password" id="input-password" placeholder="Password">
+																									<div>
+																										<div class="input-group">
+																											<input type="password" class="form-control" name="password" id="passwordField" placeholder="Password">
+																											<button class="btn btn-outline-secondary" type="button" id="togglePassword">
+																												<i class="bi bi-eye"></i>
+																											</button>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																							<div class="col-sm-12 mb-3">
+																								<div class="form-group mb-4">
+																									<label class="mb-2 fw-500">Confirm Password<span class="text-danger ms-1">*</span></label>
+																									<div>
+																										<div class="input-group">
+																											<input type="password" class="form-control" name="password_confirmation" id="confPasswordField" placeholder="Password">
+																											<button class="btn btn-outline-secondary" type="button" id="confTogglePassword">
+																												<i class="bi bi-eye"></i>
+																											</button>
+																										</div>
 																									</div>
 																								</div>
 																							</div>
@@ -142,10 +160,28 @@
 																								</div>
 																							</div>
 																							<div class="col-sm-12">
-																								<div class="form-group mb-4">
+																								<div class="form-group mb-0">
 																									<label class="mb-2 fw-500">Password<span class="text-danger ms-1">*</span></label>
-																									<div >
-																										<input type="password" class="form-control" name="password" id="input-password" placeholder="Password">
+																									<div>
+																										<div class="input-group">
+																											<input type="password" class="form-control" name="password" id="passwordField2" placeholder="Password">
+																											<button class="btn btn-outline-secondary" type="button" id="togglePassword2">
+																												<i class="bi bi-eye"></i>
+																											</button>
+																										</div>
+																									</div>
+																								</div>
+																							</div>
+																							<div class="col-sm-12 mb-3">
+																								<div class="form-group mb-0">
+																									<label class="mb-2 fw-500">Confirm Password<span class="text-danger ms-1">*</span></label>
+																									<div>
+																										<div class="input-group">
+																											<input type="password" class="form-control" name="password_confirmation" id="confPasswordField2" placeholder="Password">
+																											<button class="btn btn-outline-secondary" type="button" id="confTogglePassword2">
+																												<i class="bi bi-eye"></i>
+																											</button>
+																										</div>
 																									</div>
 																								</div>
 																							</div>
@@ -262,4 +298,57 @@ $(document).ready(function () {
         });
     });
 })
+const passwordField = document.getElementById('passwordField');
+const toggleButton = document.getElementById('togglePassword');
+
+toggleButton.addEventListener('click', function() {
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleButton.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        passwordField.type = 'password';
+        toggleButton.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+});
+
+const passwordField2 = document.getElementById('passwordField2');
+const toggleButton2 = document.getElementById('togglePassword2');
+
+toggleButton2.addEventListener('click', function() {
+    if (passwordField2.type === 'password') {
+        passwordField2.type = 'text';
+        toggleButton2.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        passwordField2.type = 'password';
+        toggleButton2.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+});
+
+
+const confPasswordField = document.getElementById('confPasswordField');
+const confTogglePassword = document.getElementById('confTogglePassword');
+
+confTogglePassword.addEventListener('click', function() {
+    if (confPasswordField.type === 'password') {
+        confPasswordField.type = 'text';
+        confTogglePassword.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        confPasswordField.type = 'password';
+        confTogglePassword.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+});
+
+const confPasswordField2 = document.getElementById('confPasswordField2');
+const confTogglePassword2 = document.getElementById('confTogglePassword2');
+
+confTogglePassword2.addEventListener('click', function() {
+    if (confPasswordField2.type === 'password') {
+        confPasswordField2.type = 'text';
+        confTogglePassword2.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        confPasswordField2.type = 'password';
+        confTogglePassword2.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+});
+
 </script>

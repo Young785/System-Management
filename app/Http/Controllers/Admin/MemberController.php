@@ -44,12 +44,15 @@ class MemberController extends Controller
             $userData["secret_key"] = "MSM".rand(1000, 500000);
             $userData["manager_id"] = auth()->user()->secret_code;
 
+
             $image = request()->passport;
             $destinationPath = public_path('members');
-            $fileName = Str::random(40).'.'.str_replace(["image/", "/"], "", $image->getMimeType());
-            $image->move($destinationPath, $fileName);
-            $documentNames = 'members/'.$fileName;
-            $userData["passport"] = $documentNames;
+            $base64Image = str_replace('data:image/jpeg;base64,', '', $image);
+            $imageData = base64_decode($base64Image);
+            $filename = uniqid() . '.jpg';
+            $filePath = public_path('members/' . $filename);
+            file_put_contents($filePath, $imageData);
+            $userData["passport"] = 'members/'.$filename;
 
             $nin_image = request()->nin;
             $destinationPath = public_path('members');
@@ -69,7 +72,7 @@ class MemberController extends Controller
         }
     }
     
-    public function update() {
+    public function update(Request $request, $code) {
         $request = request();
         Validator::extend('users', function ($attribute, $value, $parameters, $validator) {
             return \App\Models\Member::where('email', $value)->doesntExist();
@@ -88,19 +91,20 @@ class MemberController extends Controller
             return response()->json(['message' => $data->errors()->first(), "status" => false], 403);
         }
 
-        if(Member::where("code", $request->code)->first() === false) {
+        if(Member::where("code", $code)->first() === false) {
             return response()->json(['message' => "Member not found.", "status" => false], 400);
         }
 
          if(auth()->user()->role == "superadmin") {
-            $regionData = $request->except('_token');
+            $memberData = $request->except('_token');
+
             if(request()->hasFile("passport")) {
                 $image = request()->passport;
                 $destinationPath = public_path('members');
                 $fileName = Str::random(40).'.'.str_replace(["image/", "/"], "", $image->getMimeType());
                 $image->move($destinationPath, $fileName);
                 $documentNames = 'members/'.$fileName;
-                $regionData["passport"] = $documentNames;
+                $memberData["passport"] = $documentNames;
             }
             if(request()->hasFile("nin")) {
                 $nin_image = request()->nin;
@@ -108,13 +112,13 @@ class MemberController extends Controller
                 $fileName = Str::random(40).'.'.str_replace(["image/", "/"], "", $nin_image->getMimeType());
                 $nin_image->move($destinationPath, $fileName);
                 $documentNames = 'members/'.$fileName;
-                $regionData["nin"] = $documentNames;
+                $memberData["nin"] = $documentNames;
             }
 
-            $regionData["manager_id"] = auth()->user()->secret_code;
+            $memberData["manager_id"] = auth()->user()->secret_code;
             
             try {
-                Member::where("code", $request->code)->update($regionData);
+                Member::where("code", $code)->update($memberData);
                 return response()->json(['message' => "Member updated Successfully", "success" => true], 200);
             } catch (\Exception $e) {
                 return response()->json(['message' => $e->getMessage(), "success" => false], 400);
