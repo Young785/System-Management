@@ -14,7 +14,7 @@ class MemberController extends Controller
         if(auth()->user()->role === "superadmin"){
             $data['members'] = Member::orderBy("created_at", "desc")->get();
         } else {
-            $data['members'] = Member::orderBy("created_at", "desc")->where("user_id", auth()->user()->secret_code)->get();
+            $data['members'] = Member::orderBy("created_at", "desc")->where("manager_id", auth()->user()->secret_code)->get();
         }
 
         return view('admin/members', $data);

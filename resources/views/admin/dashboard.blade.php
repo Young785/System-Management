@@ -158,7 +158,7 @@ $(document).ready(function () {
                     } else {
                         window.location.reload()
                     }
-                }, 2000);
+                }, 1000);
                 $(first).attr("disabled", false)
             },
             error: function (xhr, status, error) {

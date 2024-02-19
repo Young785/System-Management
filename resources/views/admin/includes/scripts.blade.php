@@ -21,18 +21,27 @@
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
         
         <!-- Datatables Cdn -->
-        <script src="https://cdn.datatables.net/2.0.0/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.min.js"></script>
-        <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.6/pdfmake.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-        <link rel="modulepreload" href="{{ url('/') }}/build/assets/table-data-763ba9af.js" />
-        <script type="module" src="{{ url('/') }}/build/assets/table-data-763ba9af.js"></script>
+        {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+
+<!-- DataTables Buttons -->
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.dataTables.js"></script>
+
+<!-- JSZip -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<!-- PDFMake -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<!-- DataTables Buttons HTML5 Export -->
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
+
+<!-- DataTables Buttons Print -->
+<script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
         
         <script type="module" src="{{ url('/') }}/build/assets/auth.js"></script>
 
@@ -89,6 +98,24 @@
                     toastr.warning("{{ session('warning') }}");
             @endif
         </script>
+        <script>
+new DataTable('#membersTable', {
+    layout: {
+        topStart: {
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        }
+    }
+});
+</script>
+<script>
+new DataTable('#datatable-basic', {
+    layout: {
+        topStart: {
+            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+        }
+    }
+});
+</script>
         <!-- END SCRIPTS -->
 
     </body> 

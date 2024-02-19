@@ -73,9 +73,9 @@ class ManagersController extends Controller
             }
             
             $userData['password'] = Hash::make($request->password);
-            $userData = $request->except('_token', 'confirmation_password');
+            $userData = $request->except('_token', 'password_confirmation');
         }else{
-            $userData = $request->except('_token', 'password');
+            $userData = $request->except('_token', 'password', 'password_confirmation');
         }
         try {
             User::where("secret_code", $request->secret_code)->update($userData);

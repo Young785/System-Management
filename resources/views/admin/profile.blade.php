@@ -56,6 +56,32 @@
                                                         <input class="form-control ms-0" type="text" value="{{ $user->email }}" name="email" placeholder="Enter your Email">
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group mb-0">
+                                                        <label class="mb-2 fw-500">Password<span class="text-danger ms-1">*</span></label>
+                                                        <div>
+                                                            <div class="input-group">
+                                                                <input type="password" class="form-control" name="password" id="passwordField" placeholder="Password">
+                                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                                    <i class="bi bi-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 mb-3">
+                                                    <div class="form-group mb-0">
+                                                        <label class="mb-2 fw-500">Confirm Password<span class="text-danger ms-1">*</span></label>
+                                                        <div>
+                                                            <div class="input-group">
+                                                                <input type="password" class="form-control" name="password_confirmation" id="confPasswordField" placeholder="Password">
+                                                                <button class="btn btn-outline-secondary" type="button" id="confTogglePassword">
+                                                                    <i class="bi bi-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="col-xl-12">
                                                     <div class="modal-footer">
                                                         <button class="btn btn-primary" type="submit" id="updateManagerBtn">Save changes</button>
@@ -78,3 +104,32 @@
 
            @include('admin.includes.footer')
            @include('admin.includes.scripts')
+           <script>
+
+const passwordField = document.getElementById('passwordField');
+const toggleButton = document.getElementById('togglePassword');
+
+togglePassword.addEventListener('click', function() {
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        togglePassword.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        passwordField.type = 'password';
+        togglePassword.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+});
+
+
+const confPasswordField = document.getElementById('confPasswordField');
+const confTogglePassword = document.getElementById('confTogglePassword');
+
+confTogglePassword.addEventListener('click', function() {
+    if (confPasswordField.type === 'password') {
+        confPasswordField.type = 'text';
+        confTogglePassword.innerHTML = '<i class="fa fa-eye-slash"></i>';
+    } else {
+        confPasswordField.type = 'password';
+        confTogglePassword.innerHTML = '<i class="fa fa-eye"></i>';
+    }
+});
+           </script>

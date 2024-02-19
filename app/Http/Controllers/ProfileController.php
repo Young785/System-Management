@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -39,11 +40,23 @@ class ProfileController extends Controller
         //     $documentNames = 'users/'.$fileName;
         //     $userData["passport"] = $documentNames;
         // }
-
-        $regionData = $request->except('_token');
+        if($request->password) {
+            $data = Validator::make($request->all(), [
+                "password" => "required|string|confirmed",
+            ]);
+            
+            if($data->fails()){
+                return response()->json(['message' => $data->errors()->first(), "status" => false], 403);
+            }
+            
+            $userData['password'] = Hash::make($request->password);
+            $regionData = $request->except('_token', 'password_confirmation');
+        }else{
+            $regionData = $request->except('_token', 'password', 'password_confirmation');
+        }
         try {
             User::where("secret_code", auth()->user()->secret_code)->update($regionData);
-            return response()->json(['message' => "User updated Successfully", "success" => true], 200);
+            return response()->json(['message' => "Account updated Successfully", "success" => true], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage(), "success" => false], 400);
         }

@@ -137,7 +137,7 @@
 																							data-bs-dismiss="modal"></button>
 																					</div>
 																					<div class="modal-body">
-																					<form id="processEditData" data-first="#updateManagerBtn" data-type="Update Manager" data-transform="no" data-url="{{ route('admin.managers.update') }}" data-redirect="true" data-redirect-to="{{ route('admin.managers.index') }}">
+																					<form id="processEditData" data-id="{{ $manager->secret_code }}" data-first="#updateManagerBtn" data-type="Update Manager" data-transform="no" data-url="{{ route('admin.managers.update') }}" data-redirect="true" data-redirect-to="{{ route('admin.managers.index') }}">
 																						@csrf
 																						<input type="hidden" name="secret_code" value="{{ $manager->secret_code }}">
 																						<div class="b-block">
@@ -248,7 +248,8 @@
            @include('admin.includes.scripts')
 <script>
 $(document).ready(function () {
-	$("#processEditData").submit(function (e) {
+	$(document).on('submit', '#processEditData', function (e) {
+	// $("#processEditData").submit(function (e) {
 		e.preventDefault();
 		event.preventDefault();
         var first = $(this).data('first')
@@ -287,7 +288,7 @@ $(document).ready(function () {
                     } else {
                         window.location.reload()
                     }
-                }, 2000);
+                }, 1000);
                 $(first).attr("disabled", false)
             },
             error: function (xhr, status, error) {

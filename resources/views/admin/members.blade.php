@@ -6,6 +6,15 @@
    p {
    font-size: 15px;
    }
+   .dt-search {
+      float: right;
+   }
+   .dt-input {
+      border: 1px solid #cccbcb;
+      padding: 15px;
+      margin: 15px 0px 15px 15px;
+      border-radius: 10px;
+   }
 </style>
 <!--Main-Sidebar-->
 @include('admin.includes.sidebar')
@@ -154,7 +163,7 @@
                            <tr>
                               <td>{{ $member->firstname }} {{ $member->lastname }}</td>
                               <td>{{ $member->phone }}</td>
-                              <td>{{ \Carbon\Carbon::parse($member->dob)->diffForHumans() }}</td>
+                              <td>{{ \Carbon\Carbon::parse($member->dob)->format('jS F, Y') }}</td>
                               <td>{{ $member->marital_status }}</td>
                               <td>{{ \Carbon\Carbon::parse($member->created_at)->diffForHumans() }}</td>
                               <td>
@@ -306,7 +315,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
 
 <script>
-   	$("#processEditData").submit(function (e) {
+	$(document).on('submit', '#processEditData', function (e) {
    		e.preventDefault();
    		event.preventDefault();
            var first = $(this).data('first')
@@ -345,7 +354,7 @@
                        } else {
                            window.location.reload()
                        }
-                   }, 2000);
+                   }, 1000);
                    $(first).attr("disabled", false)
                },
                error: function (xhr, status, error) {
@@ -379,8 +388,7 @@
 		output.src = reader.result;
 		};
 		reader.readAsDataURL(event.target.files[0]);
-   };
-    
+   };  
 </script>
 <script language="JavaScript">
    function open_cam() {
@@ -399,14 +407,14 @@
            document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
        } );
    }
-   new DataTable('#membersTable', {
-    ldom: 'Bfrtip', // This will include buttons
-    buttons: [
-        'copy', 
-        'csv', 
-        'excel', 
-        'pdf', 
-        'print'
-    ]
+   </script>
+   <!-- jQuery -->
+   {{-- <script>
+$(document).ready(function() {
+    $("#membersTable").DataTable({
+        language: { searchPlaceholder: "Search...", sSearch: "" },
+        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+        pageLength: 10
+    });
 });
-</script>
+      </script> --}}

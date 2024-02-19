@@ -199,7 +199,7 @@
            @include('admin.includes.scripts')
 <script>
 $(document).ready(function () {
-	$("#processEditData").submit(function (e) {
+	$(document).on('submit', '#processEditData', function (e) {
 		e.preventDefault();
 		event.preventDefault();
         var first = $(this).data('first')
@@ -238,7 +238,7 @@ $(document).ready(function () {
                     } else {
                         window.location.reload()
                     }
-                }, 2000);
+                }, 1000);
                 $(first).attr("disabled", false)
             },
             error: function (xhr, status, error) {

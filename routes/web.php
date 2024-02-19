@@ -33,14 +33,14 @@ Route::get('/home', function(){
 Route::middleware(["auth"])->name("admin.")->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     
-    Route::name("regions.")->middleware("superadmin")->prefix("/regions")->group(function () {
+    Route::name("regions.")->prefix("/regions")->group(function () {
         Route::get('/', [RegionsController::class, 'index'])->name('index');
         Route::post('/create', [RegionsController::class, 'create'])->name('create');
         Route::post('/update/{id}', [RegionsController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [RegionsController::class, 'delete'])->name('delete');
     });
 
-    Route::name("zones.")->middleware("superadmin")->prefix("/zones")->group(function () {
+    Route::name("zones.")->prefix("/zones")->group(function () {
         Route::get('/', [ZonesController::class, 'index'])->name('index');
         Route::post('/create', [ZonesController::class, 'create'])->name('create');
         Route::post('/update/{id}', [ZonesController::class, 'update'])->name('update');
@@ -59,7 +59,7 @@ Route::middleware(["auth"])->name("admin.")->group(function () {
         Route::post('/update', [ProfileController::class, 'update'])->name('update');
     });
 
-    Route::name("members.")->middleware("superadmin")->prefix("/members")->group(function () {
+    Route::name("members.")->prefix("/members")->group(function () {
         Route::get('/', [MemberController::class, 'index'])->name('index');
         Route::post('/create', [MemberController::class, 'create'])->name('create');
         Route::post('/update/{id}', [MemberController::class, 'update'])->name('update');
