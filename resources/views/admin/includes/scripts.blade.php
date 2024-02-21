@@ -98,20 +98,11 @@
                     toastr.warning("{{ session('warning') }}");
             @endif
         </script>
-        <script>
-new DataTable('#membersTable', {
-    layout: {
-        topStart: {
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-        }
-    }
-});
-</script>
 <script>
 new DataTable('#datatable-basic', {
     layout: {
         topStart: {
-            buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+            // buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
         }
     }
 });

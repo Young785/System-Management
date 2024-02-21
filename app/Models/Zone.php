@@ -10,4 +10,8 @@ class Zone extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function region () {
+        return $this->hasOne(Region::class, 'code', 'region_id');
+    }
 }

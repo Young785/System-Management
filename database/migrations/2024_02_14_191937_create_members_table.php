@@ -25,11 +25,13 @@ return new class extends Migration
             $table->string("passport");
             $table->string("nin");
             $table->string("status");
+            $table->string("zone_id");
             $table->string("manager_id");
             $table->string("secret_key");
             $table->timestamps();
 
             $table->foreign('manager_id')->references('secret_code')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('zone_id')->references('code')->on('zones')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

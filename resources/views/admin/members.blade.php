@@ -38,14 +38,26 @@
          <div class="col-xl-12">
             <div class="card custom-card">
                <div class="card-header">
-                  <div class="card-title col-10">
+                  <div class="card-title col-8">
                      Members Table
                   </div>
-                  <button class="float-right btn btn-success" data-bs-toggle="modal" data-bs-target="#addManager" style="
+                  <form action="{{ route('admin.members.export', ['csv']) }}" method="POST">
+                     @csrf
+                     <button class="float-right btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportMember" style="
+                        float: right; margin-right: 20px;
+                        "><i class="ti ti-download fs-18 me-2 op-7"></i>CSV</button>
+                  </form>
+                  <form action="{{ route('admin.members.export', ['excel']) }}" method="POST">
+                     @csrf
+                     <button class="float-right btn btn-success" data-bs-toggle="modal" data-bs-target="#exportMember" style="
+                        float: right; margin-right: 20px;
+                        "><i class="ti ti-download fs-18 me-2 op-7"></i>Excel</button>
+                  </form>
+                  <button class="float-right btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMember" style="
                      float: right;
-                     "><i class="ti ti-plus fs-18 me-2 op-7"></i>Add Member</button>
+                     "><i class="ti ti-plus fs-18 me-2 op-7"></i>Create</button>
                   <!-- BASIC MODAL -->
-                  <div class="modal fade" id="addManager">
+                  <div class="modal fade" id="addMember">
                      <div class="modal-dialog" role="document">
                         <div class="modal-content modal-content-demo">
                            <div class="modal-header">
@@ -54,7 +66,7 @@
                                  data-bs-dismiss="modal"></button>
                            </div>
                            <div class="modal-body">
-                              <form id="processAuthData" data-first="#createManagerBtn" data-type="Add Member" data-transform="no" data-url="{{ route('admin.members.create') }}" data-redirect="true" data-redirect-to="{{ route('admin.members.index') }}">
+                              <form id="processAuthData" data-first="#createMemberBtn" data-type="Add Member" data-transform="no" data-url="{{ route('admin.members.create') }}" data-redirect="true" data-redirect-to="{{ route('admin.members.index') }}">
                                  @csrf
                                  <input type="hidden" name="secret_key">
                                  <div class="b-block">
@@ -125,6 +137,23 @@
                                     </div>
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
+                                          <label class="mb-2 fw-500">Regions<span class="text-danger ms-1">*</span></label>
+                                          <select name="status" class="form-control" id="getZones">
+                                             <option disabled selected>Select a region to get the zones</option>
+                                             @foreach ($regions as $region)
+                                                <option value="{{ $region->code }}">{{ $region->name }}</option>
+                                             @endforeach
+                                          </select>
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-12 mb-3">
+                                       <div class="form-group mb-0">
+                                          <label class="mb-2 fw-500">Zone<span class="text-danger ms-1">*</span></label>
+                                          <select name="status" class="form-control" id="allZones"></select>
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-12 mb-3">
+                                       <div class="form-group mb-0">
                                           <label class="mb-2 fw-500">Status<span class="text-danger ms-1">*</span></label>
                                           <select name="status" class="form-control">
                                              <option value="active">Active</option>
@@ -168,13 +197,13 @@
                               <td>{{ \Carbon\Carbon::parse($member->created_at)->diffForHumans() }}</td>
                               <td>
                                  <div class="hstack gap-2 fs-1">
-                                    <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editManager{{ $member->secret_key }}">
+                                    <a aria-label="anchor" href="javascript:void(0);" class="btn btn-icon btn-sm btn-info-light btn-wave waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editMember{{ $member->secret_key }}">
                                     <i class="ri-edit-line"></i></a>
-                                    <button aria-label="anchor" type="button" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteManager{{ $member->secret_key }}">
+                                    <button aria-label="anchor" type="button" class="btn btn-icon btn-sm btn-danger-light btn-wave waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteMember{{ $member->secret_key }}">
                                     <i class="ri-delete-bin-7-line"></i>
                                     </button>
                                     <!-- BASIC MODAL -->
-                                    <div class="modal fade" id="editManager{{ $member->secret_key }}">
+                                    <div class="modal fade" id="editMember{{ $member->secret_key }}">
                                        <div class="modal-dialog" role="document">
                                           <div class="modal-content modal-content-demo">
                                              <div class="modal-header">
@@ -243,6 +272,25 @@
                                                          <img src="{{ url('/') }}/{{ $member->nin }}" id="nin2" width="500" height="100">
                                                       </div>
                                                    </div>
+                                                   <div class="col-sm-12 mb-1">
+                                                      <div class="form-group mb-0">
+                                                         <label class="mb-2 fw-500">Regions<span class="text-danger ms-1">*</span></label>
+                                                         <select name="region_id" class="form-control" id="getZones2">
+                                                            <option disabled selected>Select a region to get the zones</option>
+                                                            @foreach ($regions as $region)
+                                                               <option {{ ($member->zone->region->code == $region->code) ? "selected" : "" }} value="{{ $region->code }}">{{ $region->name }}</option>
+                                                            @endforeach
+                                                         </select>
+                                                      </div>
+                                                   </div>
+                                                   <div class="col-sm-12 mb-1">
+                                                      <div class="form-group mb-0">
+                                                         <label class="mb-2 fw-500">Zone<span class="text-danger ms-1">*</span></label>
+                                                         <select name="zone_id" class="form-control" id="allZones2">
+                                                            <option value="{{ $member->zone->code }}">{{ $member->zone->name }}</option>
+                                                         </select>
+                                                      </div>
+                                                   </div>
                                                    <div class="col-sm-12 mb-">
                                                       <div class="form-group mb-0">
                                                          <label class="mb-2 fw-500">Status<span class="text-danger ms-1">*</span></label>
@@ -264,7 +312,7 @@
                                        </div>
                                     </div>
                                  </div>
-                                 <div class="modal fade" id="deleteManager{{ $member->secret_key }}">
+                                 <div class="modal fade" id="deleteMember{{ $member->secret_key }}">
                                     <div class="modal-dialog" role="document">
                                        <div class="modal-content modal-content-demo">
                                           <div class="modal-header">
@@ -338,6 +386,7 @@
                },
                data: formData,
                success: function (response) {
+                    $(this).closest('.modal').modal('toggle');
                    if (transform != 'no') {
                        $(first).text(transform)
                    }
@@ -409,12 +458,15 @@
    }
    </script>
    <!-- jQuery -->
-   {{-- <script>
+   <script>
 $(document).ready(function() {
     $("#membersTable").DataTable({
         language: { searchPlaceholder: "Search...", sSearch: "" },
-        buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
-        pageLength: 10
+        buttons: ['copy', 'csv', 'excel'],
+        pageLength: 10,
+      //   ajax: {
+      //    url: '/members/all',
+      // },
     });
 });
-      </script> --}}
+      </script>

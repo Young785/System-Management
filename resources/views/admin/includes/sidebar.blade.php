@@ -47,6 +47,7 @@
 								<li class="slide__category"><span class="category-name">Areas</span></li>
 								<!-- End::slide__category -->
 
+								@if (auth()->user()->role == 'superadmin')
 								<!-- Start::slide -->
 								<li class="slide has-sub">
 									<a href="javascript:void(0);" class="side-menu__item">
@@ -67,6 +68,7 @@
 									</ul>
 								</li>
 								<!-- End::slide -->
+								@endif
 								
 								@if (auth()->user()->role == 'superadmin')
 									<!-- Start::slide -->

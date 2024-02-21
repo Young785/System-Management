@@ -272,6 +272,7 @@ $(document).ready(function () {
             },
             data: formData,
             success: function (response) {
+		        $(this).closest('.modal').modal('toggle');
                 if (transform != 'no') {
                     $(first).text(transform)
                 }

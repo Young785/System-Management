@@ -22,6 +22,7 @@ $(document).ready(function () {
             },
             data: formData,
             success: function (response) {
+                $(this).closest('.modal').modal('toggle');
                 if (transform != 'no') {
                     $(first).text(transform)
                 }
@@ -48,6 +49,109 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).on('change', '#getZones', function (e) {
+        e.preventDefault();
+        event.preventDefault();
+        var id = $(this).val()
+        var option = $('<option>', {
+            selected: "selected",
+            text: "Loading, Please wait..."
+        });
+
+        $('#allZones').append(option);
+        $.ajax({
+            type: 'GET',
+            url: "/members/get-zones/" + id,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {},
+            success: function (response) {
+                $('#allZones').empty();
+                response.data.forEach(function (optionData) {
+                    var option = $('<option>', {
+                        value: optionData.code,
+                        text: optionData.name
+                    });
+                    $('#allZones').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                toastr.error("Error loading Zones" + error, { timeOut: 3000 })
+            }
+        });
+    });
+    $(document).on('change', '#getZones2', function (e) {
+        e.preventDefault();
+        event.preventDefault();
+        var id = $(this).val()
+        var option = $('<option>', {
+            selected: "selected",
+            text: "Loading, Please wait..."
+        });
+
+        $('#allZones').append(option);
+        $.ajax({
+            type: 'GET',
+            url: "/members/get-zones/" + id,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {},
+            success: function (response) {
+                $('#allZones2').empty();
+                response.data.forEach(function (optionData) {
+                    var option = $('<option>', {
+                        value: optionData.code,
+                        text: optionData.name
+                    });
+                    $('#allZones2').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                toastr.error("Error loading Zones" + error, { timeOut: 3000 })
+            }
+        });
+    });
+    $(document).on('change', '#exportMember', function (e) {
+        e.preventDefault();
+        event.preventDefault();
+        var id = $(this).val()
+        var option = $('<option>', {
+            selected: "selected",
+            text: "Loading, Please wait..."
+        });
+
+        $('#allZones').append(option);
+        $.ajax({
+            type: 'GET',
+            url: "/members/export",
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {},
+            success: function (response) {
+                $('#allZones2').empty();
+                response.data.forEach(function (optionData) {
+                    var option = $('<option>', {
+                        value: optionData.code,
+                        text: optionData.name
+                    });
+                    $('#allZones2').append(option);
+                });
+            },
+            error: function (xhr, status, error) {
+                toastr.error("Error loading Zones" + error, { timeOut: 3000 })
+            }
+        });
+    });
+
     $('#handleSubmission').submit(function (event) {
     });
 });

@@ -2,22 +2,75 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\MembersExport;
 use App\Http\Controllers\Controller;
 use App\Models\Member;
+use App\Models\Region;
+use App\Models\Zone;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller
 {
     public function index() {
         if(auth()->user()->role === "superadmin"){
-            $data['members'] = Member::orderBy("created_at", "desc")->get();
+            $data['members'] = Member::with(["zone"])->orderBy("created_at", "desc")->get();
         } else {
-            $data['members'] = Member::orderBy("created_at", "desc")->where("manager_id", auth()->user()->secret_code)->get();
+            $data['members'] = Member::with(["zone"])->orderBy("created_at", "desc")->where("manager_id", auth()->user()->secret_code)->get();
         }
-
+        $data['regions'] = Region::where("status", "active")->orderBy("created_at", "desc")->get();
+        // dd($data);
+        
         return view('admin/members', $data);
+    }
+    public function getMembers(Request $request) {
+         $searchQuery = $request->input('search.value');
+
+        // Perform filtering based on search query
+
+        try {
+        $filteredData = Member::where('firstname', 'like', '%' . $searchQuery . '%')
+        ->orWhere('lastname', 'like', '%' . $searchQuery . '%')
+        ->orWhere('address', 'like', '%' . $searchQuery . '%')
+        ->orWhere('code', 'like', '%' . $searchQuery . '%')
+        ->orWhere('phone', 'like', '%' . $searchQuery . '%')
+        ->orWhere('dob', 'like', '%' . $searchQuery . '%')
+        ->orWhere('marital_status', 'like', '%' . $searchQuery . '%')
+        ->orWhere('status', 'like', '%' . $searchQuery . '%')
+            ->get();
+                return response()->json(['message' => "Members generated successfully.", "data" => $filteredData, "status" => true], 200);
+                } catch (\Exception $e) {
+                return response()->json(['message' => $e, "status" => false], 403);
+            }
+
+        }
+    public function export(Request $request, $type) {
+        if ($type === 'csv') {
+            return Excel::download(new MembersExport, 'Members Aefnigeria.csv');
+        }else{
+            $members = Member::all();
+            $output='';
+            foreach ($members as $row) {
+                $output.=  implode(",",$row->toArray());
+            }
+            $headers = array(
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="Members Aefnigeria.xlsx"',
+            );
+            return Response::make(rtrim($output, "\n"), 200, $headers);
+        }
+    }
+    
+        public function zones(Request $req, $id) {
+        try {
+            $zones = Zone::where("status", "active")->where("region_id", $id)->orderBy("created_at", "desc")->get();
+            return response()->json(['message' => "Zones generated.", "data" => $zones, "status" => true], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e, "status" => false], 403);
+        }
     }
     
     public function create() {
@@ -32,6 +85,7 @@ class MemberController extends Controller
             "passport" => "required",
             "nin" => "required",
             "status" => "required|string",
+            "zone_id" => "required|string",
         ]);
 
         if($data->fails()){
@@ -118,6 +172,7 @@ class MemberController extends Controller
             $memberData["manager_id"] = auth()->user()->secret_code;
             
             try {
+                $memberData = $request->except('_token', 'region_id');
                 Member::where("code", $code)->update($memberData);
                 return response()->json(['message' => "Member updated Successfully", "success" => true], 200);
             } catch (\Exception $e) {

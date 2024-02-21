@@ -48,14 +48,13 @@ class ProfileController extends Controller
             if($data->fails()){
                 return response()->json(['message' => $data->errors()->first(), "status" => false], 403);
             }
-            
+            $userData = $request->except('_token', 'password_confirmation');
             $userData['password'] = Hash::make($request->password);
-            $regionData = $request->except('_token', 'password_confirmation');
         }else{
-            $regionData = $request->except('_token', 'password', 'password_confirmation');
+            $userData = $request->except('_token', 'password', 'password_confirmation');
         }
         try {
-            User::where("secret_code", auth()->user()->secret_code)->update($regionData);
+            User::where("secret_code", auth()->user()->secret_code)->update($userData);
             return response()->json(['message' => "Account updated Successfully", "success" => true], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage(), "success" => false], 400);

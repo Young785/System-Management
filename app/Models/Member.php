@@ -10,4 +10,9 @@ class Member extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $cast = ["region"];
+    
+    public function zone () {
+        return $this->hasOne(Zone::class, 'code', 'zone_id')->with(['region']);
+    }
 }
