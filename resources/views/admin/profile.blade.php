@@ -56,6 +56,15 @@
                                                         <input class="form-control ms-0" type="text" value="{{ $user->email }}" name="email" placeholder="Enter your Email">
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-12 mb-3">
+                                                <div class="form-group mb-0">
+                                                    <label class="mb-2 fw-500">Profile Photo<span class="text-danger ms-1">*</span></label>
+                                                    <input class="form-control ms-0" onchange="loadImageFile(event)" type="file" name="user_image">
+                                                </div>
+                                                <div class="col-5 mt-3">
+                                                    <img src="" width="300" height="100" id="user_image">
+                                                </div>
+                                                </div>
                                                 <div class="col-sm-12">
                                                     <div class="form-group mb-0">
                                                         <label class="mb-2 fw-500">Password<span class="text-danger ms-1">*</span></label>
@@ -132,4 +141,13 @@ confTogglePassword.addEventListener('click', function() {
         confTogglePassword.innerHTML = '<i class="fa fa-eye"></i>';
     }
 });
+
+   var loadImageFile = function(event) {
+		var reader = new FileReader();
+		reader.onload = function(){
+		var output = document.getElementById('user_image');
+		output.src = reader.result;
+   	};
+   	reader.readAsDataURL(event.target.files[0]);
+   };
            </script>

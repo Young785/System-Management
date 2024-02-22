@@ -36,7 +36,7 @@ class ZonesController extends Controller
         
         if(auth()->user()->role == "superadmin") {
             $regionData = $request->except('_token');
-            $regionData["code"] = "RG".rand(1000, 500000);
+            $regionData["code"] = "ZE".rand(1000, 500000);
             $regionData["user_id"] = auth()->user()->secret_code;
             $regionData["region_id"] = $request->region_id;
             

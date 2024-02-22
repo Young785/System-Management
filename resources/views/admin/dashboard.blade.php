@@ -31,31 +31,33 @@
                                 <div class="row">
                                     <div class="col-xxl-5 col-xl-12">
                                         <div class="row">
-                                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xxl-6">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="d-flex align-items-start">
-                                                            <div class="flex-grow-1">
-                                                                <p class="mb-0">Total Managers</p>
-                                                                <span class="fs-5">{{ $managers }}</span>
-                                                            </div>
-                                                            <div class="min-w-fit-content ms-3">
-                                                                <span
-                                                                    class="avatar avatar-md br-5 bg-primary-transparent text-primary">
-                                                                    <i class="fe fe-user fs-18"></i>
-                                                                </span>
+                                            @if (auth()->user()->role == 'superadmin')
+                                                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xxl-6">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="d-flex align-items-start">
+                                                                <div class="flex-grow-1">
+                                                                    <p class="mb-0">Total Managers</p>
+                                                                    <span class="fs-5">{{ $managers }}</span>
+                                                                </div>
+                                                                <div class="min-w-fit-content ms-3">
+                                                                    <span
+                                                                        class="avatar avatar-md br-5 bg-primary-transparent text-primary">
+                                                                        <i class="fe fe-user fs-18"></i>
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xxl-6">
                                                 <div class="card">
                                                     <div class="card-body">
                                                         <div class="d-flex align-items-start">
                                                             <div class="flex-grow-1">
                                                                 <p class="mb-0">Total Members</p>
-                                                                <span class="fs-5">{{ $managers }}</span>
+                                                                <span class="fs-5">{{ $members }}</span>
                                                             </div>
                                                             <div class="min-w-fit-content ms-3">
                                                                 <span

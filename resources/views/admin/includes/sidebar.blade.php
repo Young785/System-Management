@@ -8,10 +8,10 @@
 					<!-- Start::main-sidebar-header -->
 					<div class="main-sidebar-header">
 						<a href="{{ route('admin.dashboard.index') }}" class="header-logo">
-							<img src="build/assets/images/brand/desktop-logo.png" alt="logo" class="logo-img desktop-logo">
-							<img src="build/assets/images/brand/toggle-logo.png" alt="logo" class="logo-img toggle-logo">
-							<img src="build/assets/images/brand/desktop-dark.png" alt="logo" class="logo-img desktop-dark">
-							<img src="build/assets/images/brand/toggle-dark.png" alt="logo" class="logo-img toggle-dark">
+							<img src="{{ url('/') }}/build/assets/images/brand/desktop-logo.png" alt="logo" class="logo-img desktop-logo">
+							<img src="{{ url('/') }}/build/assets/images/brand/toggle-logo.png" alt="logo" class="logo-img toggle-logo">
+							<img src="{{ url('/') }}/build/assets/images/brand/desktop-dark.png" alt="logo" class="logo-img desktop-dark">
+							<img src="{{ url('/') }}/build/assets/images/brand/toggle-dark.png" alt="logo" class="logo-img toggle-dark">
 						</a>
 					</div>
 					<!-- End::main-sidebar-header -->

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -52,6 +53,14 @@ class ProfileController extends Controller
             $userData['password'] = Hash::make($request->password);
         }else{
             $userData = $request->except('_token', 'password', 'password_confirmation');
+        }
+
+        if ($request->hasFile("user_image")) {
+            $user_image = request()->user_image;
+            $destinationPath = public_path('users');
+            $fileName = Str::random(40).'.'.str_replace(["image/", "/"], "", $user_image->getMimeType());
+            $user_image->move($destinationPath, $fileName);
+            $userData["user_image"] = $fileName;
         }
         try {
             User::where("secret_code", auth()->user()->secret_code)->update($userData);

@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Models\Zone;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
@@ -51,8 +52,27 @@ class MemberController extends Controller
         if ($type === 'csv') {
             return Excel::download(new MembersExport, 'Members Aefnigeria.csv');
         }else{
-            $members = Member::all();
+            $query = Member::select(
+                '*',
+                'zones.name as zone_name',
+                'regions.name as region_name',
+                DB::raw("DATE_FORMAT(members.created_at, '%d %M %Y') as created_at"), DB::raw("DATE_FORMAT(members.updated_at, '%d %M %Y') as updated_at")
+            )
+            ->join("zones", "zones.code", "members.zone_id")
+            ->join("regions", "regions.code", "=", "zones.region_id");
+            
+            if(auth()->user()->role === 'superadmin'){
+                $members = $query->get();
+            } else {
+                $members = $query
+                ->where("members.manager_id", auth()->user()->secret_code)
+                ->get();
+            }
+            // dd($members);
+            
             $output='';
+            $output .= implode(',', array_keys($members->first()->toArray())) . "\n";
+
             foreach ($members as $row) {
                 $output.=  implode(",",$row->toArray());
             }
