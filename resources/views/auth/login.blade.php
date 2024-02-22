@@ -92,7 +92,7 @@
                                                     </div>
                                                 </div> --}}
                                                 <div class="d-grid mb-3">
-                                                    <button type="submit" class="btn btn-primary"> Login</button>
+                                                    <button type="submit" class="btn btn-primary" id="loginBtn"> Login</button>
                                                 </div>
                                             </div>
                                         </div>

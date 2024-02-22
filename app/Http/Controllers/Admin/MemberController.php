@@ -92,8 +92,8 @@ class MemberController extends Controller
             return response()->json(['message' => $data->errors()->first(), "status" => false], 403);
         }
         
-        if(auth()->user()->role == "superadmin") {
-            $userData = $request->except('_token');
+        if(auth()->user()->role == "superadmin" || auth()->user()->role == "admin") {
+            $userData = $request->except('_token', 'region_id');
             $userData["code"] = "MSM".rand(1000, 500000);
             $userData["secret_key"] = "MSM".rand(1000, 500000);
             $userData["manager_id"] = auth()->user()->secret_code;
@@ -149,9 +149,9 @@ class MemberController extends Controller
             return response()->json(['message' => "Member not found.", "status" => false], 400);
         }
 
-         if(auth()->user()->role == "superadmin") {
-            $memberData = $request->except('_token');
-
+         if(auth()->user()->role == "superadmin" || auth()->user()->role == "admin") {
+            $memberData = $request->except('_token', 'region_id');
+            
             if(request()->hasFile("passport")) {
                 $image = request()->passport;
                 $destinationPath = public_path('members');
@@ -185,7 +185,7 @@ class MemberController extends Controller
     }
     
     public function delete(Request $r, $sec_code) {
-        if(auth()->user()->role == "superadmin") {
+        if(auth()->user()->role == "superadmin" || auth()->user()->role == "admin") {
             try {
                 Member::where("secret_code", $sec_code)->delete();
                 return redirect()->back()->with(['success' => "Member deleted Successfully"]);

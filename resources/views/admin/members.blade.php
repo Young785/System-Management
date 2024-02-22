@@ -138,7 +138,7 @@
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
                                           <label class="mb-2 fw-500">Regions<span class="text-danger ms-1">*</span></label>
-                                          <select name="status" class="form-control" id="getZones">
+                                          <select name="region_id" class="form-control" id="getZones">
                                              <option disabled selected>Select a region to get the zones</option>
                                              @foreach ($regions as $region)
                                                 <option value="{{ $region->code }}">{{ $region->name }}</option>
@@ -149,7 +149,7 @@
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
                                           <label class="mb-2 fw-500">Zone<span class="text-danger ms-1">*</span></label>
-                                          <select name="status" class="form-control" id="allZones"></select>
+                                          <select name="zone_id" class="form-control" id="allZones"></select>
                                        </div>
                                     </div>
                                     <div class="col-sm-12 mb-3">
@@ -183,6 +183,8 @@
                               <th>Phone</th>
                               <th>Date of Birth</th>
                               <th>Marital Status</th>
+                              <th>Region</th>
+                              <th>Zone</th>
                               <th>Added On</th>
                               <th>Actions</th>
                            </tr>
@@ -194,6 +196,9 @@
                               <td>{{ $member->phone }}</td>
                               <td>{{ \Carbon\Carbon::parse($member->dob)->format('jS F, Y') }}</td>
                               <td>{{ $member->marital_status }}</td>
+                              <td>{{ $member->zone->region->name }}</td>
+                              <td>{{ $member->zone->name }}</td>
+
                               <td>{{ \Carbon\Carbon::parse($member->created_at)->diffForHumans() }}</td>
                               <td>
                                  <div class="hstack gap-2 fs-1">
