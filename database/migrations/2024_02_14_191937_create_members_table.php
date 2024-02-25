@@ -30,8 +30,8 @@ return new class extends Migration
             $table->string("secret_key");
             $table->timestamps();
 
-            $table->foreign('manager_id')->references('secret_code')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('zone_id')->references('code')->on('zones')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('manager_id')->references('secret_code')->on('users');
+            // $table->foreign('zone_id')->references('code')->on('zones');
         });
     }
 

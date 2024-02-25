@@ -22,8 +22,8 @@ return new class extends Migration
             $table->enum("status", ['active', 'inactive'])->default("active");
             $table->timestamps();
 
-            $table->foreign('user_id')->references('secret_code')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('region_id')->references('code')->on('regions')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('user_id')->references('secret_code')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('region_id')->references('code')->on('regions')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

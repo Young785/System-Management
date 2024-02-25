@@ -72,14 +72,20 @@
                                  <div class="b-block">
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
+                                          <label class="mb-2 fw-500">Member Code<span class="text-danger ms-1">*</span></label>
+                                          <input class="form-control ms-0" type="text" name="code" placeholder="Enter member's First Name">
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-12 mb-3">
+                                       <div class="form-group mb-0">
                                           <label class="mb-2 fw-500">First Name<span class="text-danger ms-1">*</span></label>
-                                          <input class="form-control ms-0" type="text" name="firstname" placeholder="Enter your First Name">
+                                          <input class="form-control ms-0" type="text" name="firstname" placeholder="Enter member's First Name">
                                        </div>
                                     </div>
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
                                           <label class="mb-2 fw-500">Last Name<span class="text-danger ms-1">*</span></label>
-                                          <input class="form-control ms-0" type="text" name="lastname" placeholder="Enter your Last Name">
+                                          <input class="form-control ms-0" type="text" name="lastname" placeholder="Enter member's Last Name">
                                        </div>
                                     </div>
                                     <div class="col-sm-12 mb-3">
@@ -179,6 +185,7 @@
                      <table id="membersTable" class="table table-bordered text-nowrap w-100">
                         <thead>
                            <tr>
+                              <th>Member Code</th>
                               <th>FullName</th>
                               <th>Phone</th>
                               <th>Date of Birth</th>
@@ -192,6 +199,7 @@
                         <tbody>
                            @foreach ($members as $member)
                            <tr>
+                              <td>{{ $member->code }}</td>
                               <td>{{ $member->firstname }} {{ $member->lastname }}</td>
                               <td>{{ $member->phone }}</td>
                               <td>{{ \Carbon\Carbon::parse($member->dob)->format('jS F, Y') }}</td>
@@ -220,6 +228,12 @@
                                                 <form id="processEditData" data-first="#updateMemberBtn" data-type="Update Member" data-transform="no" data-url="{{ route('admin.members.update', [$member->code]) }}" data-redirect="true" data-redirect-to="{{ route('admin.members.index') }}">
                                                    @csrf
                                                    {{-- <input value="{{ $member->secret_key }}" name="secret_key" hidden> --}}
+                                                   <div class="col-sm-12 mb-3">
+                                                      <div class="form-group mb-0">
+                                                         <label class="mb-2 fw-500">Member Code<span class="text-danger ms-1">*</span></label>
+                                                         <input class="form-control ms-0" type="text" name="code" value="{{ $member->code }}" placeholder="Enter member's First Name">
+                                                      </div>
+                                                   </div>
                                                    <div class="b-block">
                                                       <div class="form-group mb-0">
                                                          <label class="mb-2 fw-500">First Name<span class="text-danger ms-1">*</span></label>

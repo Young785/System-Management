@@ -102,10 +102,11 @@ class MemberController extends Controller
             "address" => "required|string",
             "phone" => "required|string",
             "marital_status" => "required|string",
+            "dob" => "required|string",
             "passport" => "required",
             "nin" => "required",
-            "status" => "required|string",
             "zone_id" => "required|string",
+            "status" => "required|string",
         ]);
 
         if($data->fails()){
@@ -114,11 +115,13 @@ class MemberController extends Controller
         
         if(auth()->user()->role == "superadmin" || auth()->user()->role == "admin") {
             $userData = $request->except('_token', 'region_id');
-            $userData["code"] = "MSM".rand(1000, 500000);
-            $userData["secret_key"] = "MSM".rand(1000, 500000);
+            if ($request->code == null) {
+                $userData["code"] = "MB".rand(1000, 5000);
+            }
+            $userData["secret_key"] = "MSM".rand(1000, 5000);
             $userData["manager_id"] = auth()->user()->secret_code;
 
-
+            // dd($userData);
             $image = request()->passport;
             $destinationPath = public_path('members');
             $base64Image = str_replace('data:image/jpeg;base64,', '', $image);
