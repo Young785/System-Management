@@ -55,6 +55,7 @@ class MemberController extends Controller
             $query = Member::select(
                 '*',
                 'zones.name as zone_name',
+                'members.code as code',
                 'regions.name as region_name',
                 DB::raw("DATE_FORMAT(members.created_at, '%d %M %Y') as created_at"), DB::raw("DATE_FORMAT(members.updated_at, '%d %M %Y') as updated_at")
             )
@@ -64,27 +65,26 @@ class MemberController extends Controller
             if(auth()->user()->role === 'superadmin'){
                 $members = $query->get();
             } else {
-                $members = $query
-                ->where("members.manager_id", auth()->user()->secret_code)
+                $members = $query->where("members.manager_id", auth()->user()->secret_code)
                 ->get();
             }
-            // dd($members);
             
             $output='';
             $output .= implode(',', array_keys($members->first()->toArray())) . "\n";
 
             foreach ($members as $row) {
-                $output.=  implode(",",$row->toArray());
+                    $output .= implode(',', $row->toArray()) . "\n";
             }
+
             $headers = array(
-                'Content-Type' => 'text/csv',
+                'Content-Type' => 'text/xlsx',
                 'Content-Disposition' => 'attachment; filename="Members Aefnigeria.xlsx"',
             );
             return Response::make(rtrim($output, "\n"), 200, $headers);
         }
     }
     
-        public function zones(Request $req, $id) {
+    public function zones(Request $req, $id) {
         try {
             $zones = Zone::where("status", "active")->where("region_id", $id)->orderBy("created_at", "desc")->get();
             return response()->json(['message' => "Zones generated.", "data" => $zones, "status" => true], 200);
@@ -103,7 +103,7 @@ class MemberController extends Controller
             "phone" => "required|string",
             "marital_status" => "required|string",
             "dob" => "required|string",
-            "passport" => "required",
+            // "passport" => "required",
             "nin" => "required",
             "zone_id" => "required|string",
             "status" => "required|string",
@@ -116,20 +116,31 @@ class MemberController extends Controller
         if(auth()->user()->role == "superadmin" || auth()->user()->role == "admin") {
             $userData = $request->except('_token', 'region_id');
             if ($request->code == null) {
-                $userData["code"] = "MB".rand(1000, 5000);
+                $userData["code"] = "AEF".rand(1000, 5000);
             }
-            $userData["secret_key"] = "MSM".rand(1000, 5000);
+            $userData["secret_key"] = "AEF".rand(1000, 5000);
             $userData["manager_id"] = auth()->user()->secret_code;
 
-            // dd($userData);
             $image = request()->passport;
-            $destinationPath = public_path('members');
-            $base64Image = str_replace('data:image/jpeg;base64,', '', $image);
-            $imageData = base64_decode($base64Image);
-            $filename = uniqid() . '.jpg';
-            $filePath = public_path('members/' . $filename);
-            file_put_contents($filePath, $imageData);
-            $userData["passport"] = 'members/'.$filename;
+            if($image) {
+                $base64Image = str_replace('data:image/jpeg;base64,', '', $image);
+                $imageData = base64_decode($base64Image);
+                $filename = uniqid() . '.jpg';
+                $filePath = public_path('members/' . $filename);
+                file_put_contents($filePath, $imageData);
+                $userData["passport"] = 'members/'.$filename;
+            }
+            if(request()->hasFile("passport1")) {
+                $image = request()->passport1;
+                $destinationPath = public_path('members');
+                $fileName = Str::random(40).'.'.str_replace(["image/", "/"], "", $image->getMimeType());
+                $image->move($destinationPath, $fileName);
+                $documentNames = 'members/'.$fileName;
+                unset($userData['passport1']);
+                
+                $userData["passport"] = $documentNames;
+            }
+            // dd($userData);
 
             $nin_image = request()->nin;
             $destinationPath = public_path('members');

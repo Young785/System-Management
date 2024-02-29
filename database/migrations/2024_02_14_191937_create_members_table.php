@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
+            $table->string("code");
             $table->string("firstname");
             $table->string("lastname");
             $table->string("address");
-            $table->string("code");
             $table->string("phone");
             $table->string("dob");
             $table->string("marital_status");

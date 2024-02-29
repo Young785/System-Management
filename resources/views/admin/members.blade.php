@@ -73,7 +73,7 @@
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
                                           <label class="mb-2 fw-500">Member Code<span class="text-danger ms-1">*</span></label>
-                                          <input class="form-control ms-0" type="text" name="code" placeholder="Enter member's First Name">
+                                          <input class="form-control ms-0" type="text" name="code" placeholder="Enter member's Code">
                                        </div>
                                     </div>
                                     <div class="col-sm-12 mb-3">
@@ -131,6 +131,15 @@
                                           <input type="button" value="Take Snap" onclick="take_snapshot()" class="btn btn-success my-3 float-right" style="float: right;">
                                        </div>
                                        <input type="hidden" accept="image/*" name="passport" class="image-tag" value="">
+                                    </div>
+                                    <div class="col-sm-12 mb-3">
+                                       <div class="form-group mb-0">
+                                          <label class="mb-2 fw-500">Passport(Optional)<span class="text-danger ms-1">*</span></label>
+                                          <input class="form-control ms-0" onchange="loadPassportFile1(event)" type="file" name="passport1">
+                                       </div>
+                                       <div class="col-5 mt-3">
+                                          <img src="" width="500" height="100" id="passport1">
+                                       </div>
                                     </div>
                                     <div class="col-sm-12 mb-3">
                                        <div class="form-group mb-0">
@@ -231,7 +240,7 @@
                                                    <div class="col-sm-12 mb-3">
                                                       <div class="form-group mb-0">
                                                          <label class="mb-2 fw-500">Member Code<span class="text-danger ms-1">*</span></label>
-                                                         <input class="form-control ms-0" type="text" name="code" value="{{ $member->code }}" placeholder="Enter member's First Name">
+                                                         <input class="form-control ms-0" type="text" name="code" value="{{ $member->code }}" placeholder="Enter member's Code">
                                                       </div>
                                                    </div>
                                                    <div class="b-block">
@@ -276,7 +285,7 @@
                                                    <div class="col-sm-12 mb-">
                                                       <div class="form-group mb-0">
                                                          <label class="mb-2 fw-500">Passport<span class="text-danger ms-1">*</span></label>
-                                                         <input class="form-control ms-0" onchange="loadPassportFile(event)" type="file" name="passport">
+                                                         <input class="form-control ms-0" onchange="loadPassport2File(event)" type="file" name="passport">
                                                       </div>
                                                       <div class="col-5 mt-3">
                                                          <img src="{{ url('/') }}/{{ $member->passport }}" id="passport2" width="500" height="100">
@@ -379,6 +388,21 @@
 <!--app-content closed-->
 @include('admin.includes.footer')
 @include('admin.includes.scripts')
+<script>
+   var loadPassportFile1 = function(event) {
+      try {
+         var reader = new FileReader();
+         reader.onload = function(){
+         var output = document.getElementById('passport1');
+            output.src = reader.result;
+         };
+         console.log("Hi")
+
+      }catch(e) {
+         console.log(e)
+      }
+	};
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
 
 <script>
@@ -434,7 +458,8 @@
        });
 </script>
 <script>
-   var loadPassportFile = function(event) {
+   
+   var loadPassport2File = function(event) {
 		var reader = new FileReader();
 		reader.onload = function(){
 		var output = document.getElementById('passport2');
@@ -488,4 +513,4 @@ $(document).ready(function() {
       // },
     });
 });
-      </script>
+</script>

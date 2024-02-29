@@ -17,6 +17,7 @@ class MembersExport implements FromCollection, WithHeadings
         $memberQuery = Member::select(
                 '*',
                 'zones.name as zone_name',
+                'members.code as code',
                 'regions.name as region_name',
                 DB::raw("DATE_FORMAT(members.created_at, '%d %M %Y') as created_at"), DB::raw("DATE_FORMAT(members.updated_at, '%d %M %Y') as updated_at")
             )
